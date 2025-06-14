@@ -1,14 +1,17 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
 const Layout = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gradient-to-br from-ide-gray-50 via-white to-ide-primary-50 overflow-hidden">
       <Sidebar />
-      <main className="flex-1 overflow-auto lg:ml-0">
-        {/* CRITICAL: Mobile-optimized main content with safe areas */}
-        <div className="mobile-spacing safe-top safe-bottom pt-20 lg:pt-6">
+      <main className={`flex-1 lg:ml-0 ${isHomePage ? 'overflow-hidden' : 'overflow-auto'}`}>
+        {/* Mobile-optimized main content with safe areas */}
+        <div className={`safe-top safe-bottom ${isHomePage ? 'h-full overflow-hidden' : 'pt-20 lg:pt-6'}`}>
           <Outlet />
         </div>
       </main>

@@ -56,6 +56,7 @@
   body {
     color: var(--ide-gray-900);
     background-color: var(--ide-gray-50);
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
   
   /* Better scrollbar styling with IDE colors */
@@ -136,6 +137,28 @@
   50% { opacity: 0.7; }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .animate-slide-in {
   animation: slideIn 0.3s ease-out;
 }
@@ -163,6 +186,14 @@
 
 .animate-table-pulse {
   animation: tablePulse 2s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out;
 }
 
 /* CRITICAL: Toast container - Maximum z-index */
@@ -396,6 +427,17 @@
     @apply bg-white rounded-lg p-4 shadow-sm border;
     @apply min-h-[80px] flex flex-col justify-center;
   }
+  
+  /* CRITICAL: Professional sidebar styling */
+  .sidebar-mobile {
+    @apply w-80 max-w-[85vw];
+  }
+  
+  /* CRITICAL: No scroll on homepage */
+  .no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
 }
 
 /* Mobile-specific improvements */
@@ -506,7 +548,9 @@
   .animate-pulse,
   .animate-error-pulse,
   .animate-ide-gradient,
-  .animate-table-pulse {
+  .animate-table-pulse,
+  .animate-fade-in-up,
+  .animate-scale-in {
     animation: none !important;
   }
 }
@@ -986,4 +1030,56 @@
   font-size: 14px;
   color: #15803D;
   line-height: 1.5;
+}
+
+/* CRITICAL: Professional animations */
+.professional-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.professional-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 110, 183, 0.15);
+}
+
+.professional-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid var(--ide-gray-200);
+  transition: all 0.3s ease;
+}
+
+.professional-card:hover {
+  border-color: var(--ide-primary-300);
+  box-shadow: 0 8px 25px rgba(0, 110, 183, 0.12);
+  transform: translateY(-1px);
+}
+
+/* CRITICAL: Prevent homepage scroll */
+.homepage-container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.homepage-content {
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 0;
+}
+
+/* CRITICAL: Professional gradient overlays */
+.gradient-overlay {
+  position: relative;
+}
+
+.gradient-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 110, 183, 0.05), rgba(39, 156, 56, 0.05));
+  border-radius: inherit;
+  pointer-events: none;
 }
