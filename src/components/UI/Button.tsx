@@ -25,14 +25,14 @@ const Button: React.FC<ButtonProps> = ({
   const baseClasses = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none transform hover:scale-[1.02] active:scale-[0.98] focus-enhanced';
   
   const variants = {
-    // ESKİ RENKLERİ GERİ GETİRDİK - KAYDET BUTONU GÖRÜNÜR OLACAK
+    // Standard variants
     primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm hover:shadow-md',
     secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-gray-500 border border-gray-300 hover:border-gray-400',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
-    // İDE kurumsal renkleri ayrı varyant olarak korundu
-    'ide-primary': 'btn-ide-primary',
-    'ide-secondary': 'btn-ide-secondary', 
-    'ide-accent': 'btn-ide-accent'
+    // Corporate variants with gradients
+    'ide-primary': 'corporate-button',
+    'ide-secondary': 'corporate-button corporate-button-secondary', 
+    'ide-accent': 'corporate-button corporate-button-accent'
   };
   
   const sizes = {

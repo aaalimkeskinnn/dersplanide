@@ -117,7 +117,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-ide-gray-50 via-white to-ide-primary-50 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-ide-gray-50 via-white to-ide-primary-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         {/* Hero Section */}
@@ -206,7 +206,7 @@ const Home = () => {
         </div>
 
         {/* System Features */}
-        <div className="bg-white rounded-2xl p-8 shadow-ide-lg border border-ide-gray-200">
+        <div className="bg-white rounded-2xl p-8 shadow-ide-lg border border-ide-gray-200 mb-12">
           <h2 className="text-xl font-bold text-ide-gray-900 mb-6 text-center">Sistem Özellikleri</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {systemFeatures.map((feature, index) => (
@@ -226,7 +226,7 @@ const Home = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-center">
+        <div className="text-center">
           <p className="text-sm text-ide-gray-500">
             Modern, kullanıcı dostu ve güvenilir ders programı yönetim sistemi
           </p>

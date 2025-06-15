@@ -7,11 +7,11 @@ const Layout = () => {
   const isHomePage = location.pathname === '/';
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-ide-gray-50 via-white to-ide-primary-50 overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-br from-ide-gray-50 via-white to-ide-primary-50">
       <Sidebar />
-      <main className={`flex-1 lg:ml-0 ${isHomePage ? 'overflow-hidden' : 'overflow-auto'}`}>
+      <main className={`flex-1 lg:ml-0 ${isHomePage ? '' : 'overflow-auto'}`}>
         {/* Mobile-optimized main content with safe areas */}
-        <div className={`safe-top safe-bottom ${isHomePage ? 'h-full overflow-hidden' : 'pt-20 lg:pt-6'}`}>
+        <div className={`safe-top safe-bottom ${isHomePage ? '' : 'pt-20 lg:pt-6'}`}>
           <Outlet />
         </div>
       </main>

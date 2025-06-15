@@ -38,25 +38,29 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
       return {
         title: 'Hazırlık',
         subtitle: level === 'Ortaokul' ? '08:30-08:40' : '08:30-08:50',
-        color: 'bg-blue-100 border-blue-300 text-blue-800'
+        color: '#3B82F6',
+        bgColor: '#DBEAFE'
       };
     } else if (slot.subjectId === 'fixed-breakfast') {
       return {
         title: 'Kahvaltı',
         subtitle: level === 'Ortaokul' ? '09:15-09:35' : '08:30-08:50',
-        color: 'bg-orange-100 border-orange-300 text-orange-800'
+        color: '#F59E0B',
+        bgColor: '#FEF3C7'
       };
     } else if (slot.subjectId === 'fixed-lunch') {
       return {
         title: 'Yemek',
         subtitle: level === 'İlkokul' || level === 'Anaokulu' ? '11:50-12:25' : '12:30-13:05',
-        color: 'bg-green-100 border-green-300 text-green-800'
+        color: '#10B981',
+        bgColor: '#D1FAE5'
       };
     } else if (slot.subjectId === 'fixed-afternoon-breakfast') {
       return {
         title: 'İkindi Kahvaltısı',
         subtitle: '14:35-14:45',
-        color: 'bg-yellow-100 border-yellow-300 text-yellow-800'
+        color: '#F59E0B',
+        bgColor: '#FEF3C7'
       };
     }
 
@@ -86,65 +90,116 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
     return `${period}. Ders`;
   };
 
+  // Sınıf renkleri - daha canlı ve çeşitli
+  const getClassColor = (classId: string) => {
+    const colors = [
+      { bg: '#DBEAFE', text: '#1E40AF', border: '#3B82F6' }, // Mavi
+      { bg: '#D1FAE5', text: '#065F46', border: '#10B981' }, // Yeşil
+      { bg: '#FEE2E2', text: '#991B1B', border: '#EF4444' }, // Kırmızı
+      { bg: '#FEF3C7', text: '#92400E', border: '#F59E0B' }, // Sarı
+      { bg: '#E0E7FF', text: '#3730A3', border: '#6366F1' }, // İndigo
+      { bg: '#FCE7F3', text: '#BE185D', border: '#EC4899' }, // Pembe
+      { bg: '#ECFDF5', text: '#047857', border: '#059669' }, // Emerald
+      { bg: '#FDF4FF', text: '#7C2D12', border: '#C2410C' }, // Orange
+    ];
+    
+    const hash = classId.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    
+    return colors[Math.abs(hash) % colors.length];
+  };
+
   return (
     <div style={{ 
       width: '297mm', 
       height: '210mm',
-      padding: '10mm',
-      fontSize: '12px',
-      lineHeight: '1.4',
+      padding: '8mm',
+      fontSize: '11px',
+      lineHeight: '1.3',
       fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
       backgroundColor: 'white',
-      color: '#000000'
+      color: '#000000',
+      background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%)'
     }}>
-      {/* Header */}
+      {/* COLORFUL Header with gradient */}
       <div style={{ 
-        marginBottom: '8mm',
+        marginBottom: '6mm',
         paddingBottom: '4mm',
-        borderBottom: '2px solid #000000'
+        borderBottom: '3px solid #006EB7',
+        background: 'linear-gradient(135deg, #006EB7, #279C38)',
+        borderRadius: '8px',
+        padding: '12px',
+        color: 'white',
+        boxShadow: '0 4px 12px rgba(0, 110, 183, 0.3)'
       }}>
-        <h1 style={{ 
-          fontSize: '18px', 
-          fontWeight: 'bold', 
-          margin: '0 0 4px 0',
-          color: '#000000'
-        }}>
-          {teacher.name}
-        </h1>
-        <p style={{ 
-          fontSize: '14px', 
-          margin: 0,
-          color: '#000000'
-        }}>
-          {teacher.branch} - {teacher.level}
-        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <h1 style={{ 
+              fontSize: '20px', 
+              fontWeight: 'bold', 
+              margin: '0 0 4px 0',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            }}>
+              {teacher.name}
+            </h1>
+            <p style={{ 
+              fontSize: '14px', 
+              margin: 0,
+              opacity: 0.9
+            }}>
+              {teacher.branch} • {teacher.level} • {calculateWeeklyHours()} Ders Saati
+            </p>
+          </div>
+          <div style={{
+            background: 'rgba(255,255,255,0.2)',
+            borderRadius: '8px',
+            padding: '8px 12px',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '12px', opacity: 0.8 }}>İDE Okulları</div>
+            <div style={{ fontSize: '10px', opacity: 0.7 }}>Ders Programı</div>
+          </div>
+        </div>
       </div>
 
-      {/* Schedule Table */}
+      {/* COLORFUL Schedule Table */}
       <table style={{ 
         width: '100%',
         borderCollapse: 'collapse',
-        fontSize: '11px'
+        fontSize: '10px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        borderRadius: '8px',
+        overflow: 'hidden'
       }}>
         <thead>
           <tr>
             <th style={{ 
-              border: '1px solid #000000',
+              border: '1px solid #E5E7EB',
               padding: '8px 4px',
               textAlign: 'center',
               fontWeight: 'bold',
-              backgroundColor: '#e6f3ff',
-              width: '80px'
+              background: 'linear-gradient(135deg, #006EB7, #3B82F6)',
+              color: 'white',
+              width: '70px',
+              fontSize: '9px'
             }}>
               SAAT
             </th>
-            {DAYS.map(day => (
+            {DAYS.map((day, index) => (
               <th key={day} style={{ 
-                border: '1px solid #000000',
+                border: '1px solid #E5E7EB',
                 padding: '8px 4px',
                 textAlign: 'center',
                 fontWeight: 'bold',
-                backgroundColor: '#e6f3ff'
+                background: `linear-gradient(135deg, ${
+                  index % 2 === 0 ? '#279C38' : '#10B981'
+                }, ${
+                  index % 2 === 0 ? '#34D399' : '#059669'
+                })`,
+                color: 'white',
+                fontSize: '9px'
               }}>
                 {day.toUpperCase()}
               </th>
@@ -153,18 +208,20 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
         </thead>
         <tbody>
           {/* Hazırlık/Kahvaltı Period */}
-          <tr style={{ backgroundColor: '#f0f8ff' }}>
+          <tr>
             <td style={{ 
-              border: '1px solid #000000',
-              padding: '8px 4px',
+              border: '1px solid #E5E7EB',
+              padding: '6px 4px',
               textAlign: 'center',
               fontWeight: 'bold',
-              backgroundColor: '#e6f3ff'
+              background: 'linear-gradient(135deg, #3B82F6, #60A5FA)',
+              color: 'white',
+              fontSize: '8px'
             }}>
-              <div style={{ fontSize: '10px', fontWeight: 'bold' }}>
+              <div style={{ fontWeight: 'bold' }}>
                 {teacher.level === 'Ortaokul' ? 'Hazırlık' : 'Kahvaltı'}
               </div>
-              <div style={{ fontSize: '8px', color: '#666666', marginTop: '2px' }}>
+              <div style={{ fontSize: '7px', opacity: 0.9, marginTop: '2px' }}>
                 {teacher.level === 'Ortaokul' ? '08:30-08:40' : '08:30-08:50'}
               </div>
             </td>
@@ -173,12 +230,15 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
               
               return (
                 <td key={`${day}-prep`} style={{ 
-                  border: '1px solid #000000',
-                  padding: '8px 4px',
+                  border: '1px solid #E5E7EB',
+                  padding: '6px 4px',
                   textAlign: 'center',
-                  backgroundColor: '#f0f8ff'
+                  background: fixedInfo?.bgColor || '#DBEAFE',
+                  color: fixedInfo?.color || '#1E40AF'
                 }}>
-                  {fixedInfo?.title || (teacher.level === 'Ortaokul' ? 'Hazırlık' : 'Kahvaltı')}
+                  <div style={{ fontWeight: 'bold', fontSize: '9px' }}>
+                    {fixedInfo?.title || (teacher.level === 'Ortaokul' ? 'Hazırlık' : 'Kahvaltı')}
+                  </div>
                 </td>
               );
             })}
@@ -200,19 +260,23 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
             return (
               <React.Fragment key={period}>
                 <tr style={{ 
-                  backgroundColor: isLunchPeriod ? '#f0fff0' : (periodIndex % 2 === 0 ? '#ffffff' : '#f8f9fa')
+                  backgroundColor: isLunchPeriod ? '#F0FDF4' : (periodIndex % 2 === 0 ? '#FFFFFF' : '#F8FAFC')
                 }}>
                   <td style={{ 
-                    border: '1px solid #000000',
-                    padding: '8px 4px',
+                    border: '1px solid #E5E7EB',
+                    padding: '6px 4px',
                     textAlign: 'center',
                     fontWeight: 'bold',
-                    backgroundColor: isLunchPeriod ? '#e6ffe6' : '#e6f3ff'
+                    background: isLunchPeriod 
+                      ? 'linear-gradient(135deg, #10B981, #34D399)' 
+                      : `linear-gradient(135deg, #${periodIndex % 2 === 0 ? '6366F1' : '8B5CF6'}, #${periodIndex % 2 === 0 ? '818CF8' : 'A78BFA'})`,
+                    color: 'white',
+                    fontSize: '8px'
                   }}>
-                    <div style={{ fontSize: '10px', fontWeight: 'bold' }}>
+                    <div style={{ fontWeight: 'bold' }}>
                       {isLunchPeriod ? 'Yemek' : `${period}.`}
                     </div>
-                    <div style={{ fontSize: '8px', color: '#666666', marginTop: '2px' }}>
+                    <div style={{ fontSize: '7px', opacity: 0.9, marginTop: '2px' }}>
                       {isLunchPeriod 
                         ? (teacher.level === 'İlkokul' || teacher.level === 'Anaokulu' ? '11:50-12:25' : '12:30-13:05')
                         : timeInfo
@@ -223,12 +287,15 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
                     if (isLunchPeriod) {
                       return (
                         <td key={`${day}-${period}`} style={{ 
-                          border: '1px solid #000000',
-                          padding: '8px 4px',
+                          border: '1px solid #E5E7EB',
+                          padding: '6px 4px',
                           textAlign: 'center',
-                          backgroundColor: '#f0fff0'
+                          background: 'linear-gradient(135deg, #D1FAE5, #A7F3D0)',
+                          color: '#065F46'
                         }}>
-                          Yemek
+                          <div style={{ fontWeight: 'bold', fontSize: '9px' }}>
+                            Yemek
+                          </div>
                         </td>
                       );
                     }
@@ -237,20 +304,35 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
                     
                     return (
                       <td key={`${day}-${period}`} style={{ 
-                        border: '1px solid #000000',
-                        padding: '8px 4px',
+                        border: '1px solid #E5E7EB',
+                        padding: '6px 4px',
                         textAlign: 'center',
-                        backgroundColor: periodIndex % 2 === 0 ? '#ffffff' : '#f8f9fa'
+                        backgroundColor: periodIndex % 2 === 0 ? '#FFFFFF' : '#F8FAFC'
                       }}>
                         {slotInfo ? (
-                          <div style={{ 
-                            fontWeight: 'bold',
-                            fontSize: '10px'
+                          <div style={{
+                            background: `linear-gradient(135deg, ${getClassColor(slotInfo.classItem?.id || '').bg}, ${getClassColor(slotInfo.classItem?.id || '').bg}dd)`,
+                            color: getClassColor(slotInfo.classItem?.id || '').text,
+                            borderRadius: '4px',
+                            padding: '4px',
+                            border: `2px solid ${getClassColor(slotInfo.classItem?.id || '').border}`,
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                           }}>
-                            {slotInfo.classItem?.name}
+                            <div style={{ 
+                              fontWeight: 'bold',
+                              fontSize: '9px'
+                            }}>
+                              {slotInfo.classItem?.name}
+                            </div>
                           </div>
                         ) : (
-                          <span style={{ color: '#999999', fontSize: '9px' }}>Boş</span>
+                          <div style={{ 
+                            color: '#9CA3AF', 
+                            fontSize: '8px',
+                            fontStyle: 'italic'
+                          }}>
+                            Boş
+                          </div>
                         )}
                       </td>
                     );
@@ -259,18 +341,20 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
 
                 {/* NEW: Breakfast between 1st and 2nd period for middle school */}
                 {showBreakfastAfter && (
-                  <tr style={{ backgroundColor: '#fff8f0' }}>
+                  <tr>
                     <td style={{ 
-                      border: '1px solid #000000',
-                      padding: '8px 4px',
+                      border: '1px solid #E5E7EB',
+                      padding: '6px 4px',
                       textAlign: 'center',
                       fontWeight: 'bold',
-                      backgroundColor: '#ffe6cc'
+                      background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
+                      color: 'white',
+                      fontSize: '8px'
                     }}>
-                      <div style={{ fontSize: '10px', fontWeight: 'bold' }}>
+                      <div style={{ fontWeight: 'bold' }}>
                         Kahvaltı
                       </div>
-                      <div style={{ fontSize: '8px', color: '#666666', marginTop: '2px' }}>
+                      <div style={{ fontSize: '7px', opacity: 0.9, marginTop: '2px' }}>
                         09:15-09:35
                       </div>
                     </td>
@@ -279,12 +363,15 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
                       
                       return (
                         <td key={`${day}-breakfast`} style={{ 
-                          border: '1px solid #000000',
-                          padding: '8px 4px',
+                          border: '1px solid #E5E7EB',
+                          padding: '6px 4px',
                           textAlign: 'center',
-                          backgroundColor: '#fff8f0'
+                          background: 'linear-gradient(135deg, #FEF3C7, #FDE68A)',
+                          color: '#92400E'
                         }}>
-                          {fixedInfo?.title || 'Kahvaltı'}
+                          <div style={{ fontWeight: 'bold', fontSize: '9px' }}>
+                            {fixedInfo?.title || 'Kahvaltı'}
+                          </div>
                         </td>
                       );
                     })}
@@ -293,29 +380,34 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
 
                 {/* İkindi Kahvaltısı 8. ders sonrasında */}
                 {showAfternoonBreakAfter && (
-                  <tr style={{ backgroundColor: '#fffbf0' }}>
+                  <tr>
                     <td style={{ 
-                      border: '1px solid #000000',
-                      padding: '8px 4px',
+                      border: '1px solid #E5E7EB',
+                      padding: '6px 4px',
                       textAlign: 'center',
                       fontWeight: 'bold',
-                      backgroundColor: '#fff3e0'
+                      background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
+                      color: 'white',
+                      fontSize: '8px'
                     }}>
-                      <div style={{ fontSize: '10px', fontWeight: 'bold' }}>
+                      <div style={{ fontWeight: 'bold' }}>
                         İkindi Kahvaltısı
                       </div>
-                      <div style={{ fontSize: '8px', color: '#666666', marginTop: '2px' }}>
+                      <div style={{ fontSize: '7px', opacity: 0.9, marginTop: '2px' }}>
                         14:35-14:45
                       </div>
                     </td>
                     {DAYS.map(day => (
                       <td key={`${day}-afternoon-breakfast`} style={{ 
-                        border: '1px solid #000000',
-                        padding: '8px 4px',
+                        border: '1px solid #E5E7EB',
+                        padding: '6px 4px',
                         textAlign: 'center',
-                        backgroundColor: '#fffbf0'
+                        background: 'linear-gradient(135deg, #FEF3C7, #FDE68A)',
+                        color: '#92400E'
                       }}>
-                        İkindi Kahvaltısı
+                        <div style={{ fontWeight: 'bold', fontSize: '9px' }}>
+                          İkindi Kahvaltısı
+                        </div>
                       </td>
                     ))}
                   </tr>
@@ -325,6 +417,25 @@ const SchedulePrintView: React.FC<SchedulePrintViewProps> = ({
           })}
         </tbody>
       </table>
+
+      {/* COLORFUL Footer */}
+      <div style={{
+        marginTop: '6mm',
+        padding: '8px',
+        background: 'linear-gradient(135deg, #F3F4F6, #E5E7EB)',
+        borderRadius: '6px',
+        border: '1px solid #D1D5DB',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div style={{ fontSize: '9px', color: '#374151' }}>
+          <strong>İDE Okulları</strong> • Ders Programı Sistemi
+        </div>
+        <div style={{ fontSize: '8px', color: '#6B7280' }}>
+          Oluşturulma: {new Date().toLocaleDateString('tr-TR')}
+        </div>
+      </div>
     </div>
   );
 };
